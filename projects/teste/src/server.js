@@ -40,12 +40,8 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
-// Start the server only if not in test environment
 if (process.env.NODE_ENV !== 'test') {
     app.listen(port, () => {
         console.info("Server running on port: " + port);
     });
 }
-
-// Export the app for testing
-module.exports = app;

@@ -16,6 +16,7 @@ The idea is to expand this project to cover more than just initialization, incor
 - Customizable folder structure for better project organization.
 - Initial configuration for databases such as NeonDB, PostgreSQL, MySQL, MongoDB, and Kibana/Elasticsearch.
 - Easy npm script setup to start the server and test database connections.
+- Implementation of recommended security practices, such as XSS protection, query sanitization, rate limiting, and more.
 
 ## 🛠️ Getting Started
 
@@ -111,13 +112,26 @@ PGPORT=5432
 PGUSER=your_postgres_user_here
 PGPASSWORD=your_postgres_password_here
 PGDATABASE=your_postgres_database_here
+
+# Security
+JWT_SECRET=your_jwt_secret_here
 ```
 
-### ⚙️ Configuration
+## 🛡️ Security
+
+The project includes the following security practices:
+
+- Helmet: Configures secure HTTP headers.
+- xss-clean: Protects against XSS attacks.
+- express-rate-limit: Limits the number of requests per IP to prevent brute-force attacks.
+- hpp: Protects against HTTP Parameter Pollution.
+- express-mongo-sanitize: Sanitizes MongoDB queries to prevent NoSQL injection.
+
+## ⚙️ Configuration
 
 The script automatically sets up the development environment, including essential dependencies and scripts in package.json. It also generates a .env file for configuring project-specific environment variables.
 
-### 🌐 Integração com NeonDB
+## 🌐 Integração com NeonDB
 
 The project includes built-in support for NeonDB (<https://neon.tech>), a modern and efficient PostgreSQL database service for web applications. NeonDB offers a seamless cloud database experience with an architecture that supports scalable workloads and high performance.
 
@@ -125,19 +139,79 @@ The current implementation is basic, focusing on establishing a functional conne
 
 For more information on how to set up and use NeonDB, refer to the official documentation. (<https://neon.tech/docs/introduction>).
 
-### 📝 Scripts
+## 📝 Scripts
 
-npm start: Starts the development server.
-npm dbConnection: Tests database connection.
+- npm start: Starts the development server.
+- npm run dbConnection: Tests database connection.
+- npm run lint: Runs ESLint to check for code style issues and potential errors.
+- npm test: Runs unit tests using Jest.
+- npm run coverage: Generates a code coverage report using nyc and jest.
+- npm run audit: Performs a security audit on the project's dependencies with a moderate audit level.
+- npm run audit: Automatically applies fixes for security vulnerabilities in the project's dependencies.
+- npm run prettier: Formats the code using Prettier according to defined formatting rules.
 
-### 🤝 Contributing
+## 🧪 Pre-configured Unit Tests
+
+Node Backend Kickstart comes with Jest pre-configured to facilitate running unit tests from the start. This ensures that you can validate your code's functionality quickly and efficiently. Additionally, Supertest is used to test API endpoints by simulating HTTP requests such as GET and POST without the need to actually start a server.
+
+### ⚙️ Test Environment Configuration
+
+Before running unit tests, it is important to change the NODE_ENV variable to test instead of development. This ensures that tests are executed in an isolated test environment, preventing impacts on the development or production environments.
+
+```bash
+# Example .env for testing
+NODE_ENV=test
+```
+
+### 📦 About the Tools and Libraries Added
+
+The project includes several libraries to ensure code quality and security. Here are some of them and why they were added:
+
+- Jest: Jest is a JavaScript testing library that makes it simple and efficient to test your code. It supports unit tests, integration tests, and code coverage, making it a popular choice for Node.js projects.
+- Supertest: Supertest is a library that allows you to test HTTP endpoints simply and effectively by simulating requests like GET, POST, PUT, and DELETE. It is especially useful for verifying that your API responds as expected.
+- ESLint: ESLint is a tool for identifying and fixing code style issues in JavaScript. It helps maintain consistent and error-free code, promoting best development practices.
+- Sinon: Sinon is a library that facilitates the creation of mocks, spies, and stubs for unit tests, allowing you to simulate behaviors and interactions in functions and objects. It is useful for isolating parts of the code and testing specific behaviors without external dependencies.
+- NYC: NYC is a code coverage tool that works with Jest to generate detailed reports on which parts of your code are being tested. This helps identify areas that need more attention in terms of testing.
+- npm-audit-resolver: npm-audit-resolver was added to help resolve security issues in the project's dependencies. It automates the resolution of vulnerabilities found by npm audit, making it more efficient to apply fixes.
+
+## 🚀 Running Unit Tests
+
+To run unit tests, follow these steps:
+
+Set the test environment: Make sure the NODE_ENV variable is set to test in your .env file.
+
+```bash
+NODE_ENV=test
+```
+
+Run the tests:
+
+```bash
+npm test
+```
+
+This will start the unit tests using Jest and Supertest, ensuring that your API endpoints are properly validated without needing to start a real server.
+
+### 📊 Generating Coverage Reports
+
+To generate a code coverage report, use the following command:
+
+```bash
+npm run coverage
+```
+
+This will generate a detailed report showing which parts of your code are covered by the tests.
+
+This pre-configuration allows you to start testing your code immediately, maintaining a high standard of quality and security in your Node.js project.
+
+## 🤝 Contributing
 
 Contributions are welcome! If you have suggestions or improvements, feel free to submit a pull request or open an issue.
 
-### 📜 License
+## 📜 License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
-### 🙏 Acknowledgments
+## 🙏 Acknowledgments
 
 This project was inspired by the need for a simplified and organized Node.js project setup, with the intention of covering both the client (frontend) and server (backend) sides. Special thanks to the Node.js, Express, and NeonDB communities for their excellent tools and documentation.

@@ -1,0 +1,42 @@
+{
+  "name": "teste2",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js", 
+    "dbConnection": "node src/config/db.js", 
+    "lint": "eslint .", 
+    "test": "jest", 
+    "coverage": "nyc jest", 
+    "audit": "npm audit --audit-level=moderate", 
+    "audit:fix": "npm audit fix", 
+    "prettier": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "validator": "^13.12.0",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "eslint": "^9.9.1",
+    "eslint-plugin-security": "^3.0.1",
+    "jest": "^29.7.0",
+    "npm-audit-resolver": "^3.0.0-RC.0",
+    "nyc": "^17.0.0",
+    "sinon": "^18.0.0",
+    "supertest": "^7.0.0"
+  }
+}
