@@ -1,6 +1,6 @@
 const dangerousCommandsPattern = /[;&|><`]+/g;
 const controlCharsPattern = /[\x00-\x1F\x7F-\x9F]|\x90\x90|\xEB\xFE|\xC3|\x4D\x5A|\xFF\xD8|\x7F\x45\x4C\x46/g;
-const sqlInjectionPattern = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|TABLE|OR|AND)\b|--|\/\*|\*\/|\')/gi
+const sqlInjectionPattern = /(\b(SELECT |INSERT |UPDATE |DELETE |DROP|UNION|TABLE|OR|AND)\b|--|\/\*|\*\/|\')/gi
 const noSqlInjectionPattern = /(\$where|\$gt|\$lt|\$or|\\u0024where|\\u0024gt|\\u0024lt|\\u0024or)/gi;
 const xssPattern = /<script.*?>.*?<\/script>|<img.*?(onerror|onload|onclick|onmouseover|onfocus|onblur).*?>|&#x3C;script&#x3E;.*?&#x3C;\/script&#x3E;/gi;
 const headerInjectionPattern = /\r\n|\r|\n/g;
