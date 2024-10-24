@@ -69,7 +69,7 @@ const testCases = [
     input: ';ls',
     description: 'Sanitization of command attempt with semicolon',
     type: 'Command Injection',
-    expected: 'ls',
+    expected: '',
   },
   {
     name: 'Sanitize Command AND',
@@ -181,7 +181,7 @@ const testCases = [
     input: 'ls || cat /etc/passwd',
     description: 'Sanitize command attempts with logical OR',
     type: 'Command Injection',
-    expected: 'ls',
+    expected: '',
   },
   {
     name: 'Sanitize Echo Command',
@@ -286,7 +286,7 @@ const testCases = [
     input: '|| ls -la ||',
     description: 'Command injection attempt on system',
     type: 'Command Injection',
-    expected: 'ls _la',
+    expected: '_la',
   },
   {
     name: 'LDAP Injection',
@@ -363,6 +363,76 @@ const testCases = [
     type: 'Valid Input',
     expected: "",
   },
+  {
+    name: 'BigInt Input',
+    input: BigInt(12345678901234567890),
+    description: 'BigInt input',
+    type: 'Valid Input',
+    expected: BigInt(12345678901234567890),
+  },
+  {
+    name: 'Binary Injection Null Characters',
+    input: '\x00\x00\x00\x00\x00\x00\x00\x00',
+    description: 'Binary injection attempt with null characters',
+    type: 'Binary Injection',
+    expected: ''
+  },
+  {
+    name: 'Binary Injection Shellcode',
+    input: '\x90\x90\x90\x90\xEB\xFE\xC3',
+    description: 'Binary injection attempt with shellcode',
+    type: 'Binary Injection',
+    expected: ''
+  },
+  {
+    name: 'Binary Injection Overflow Pattern',
+    input: '\x41\x41\x41\x41\x42\x42\x42\x42\x43\x43\x43\x43',
+    description: 'Binary injection attempt with overflow pattern',
+    type: 'Binary Injection',
+    expected: 'AAAABBBBCCCC'
+  },
+  {
+    name: 'Binary Injection Malformed UTF-8',
+    input: '\xC3\x28',
+    description: 'Binary injection attempt with malformed UTF-8 sequence',
+    type: 'Binary Injection',
+    expected: ''
+  },
+  {
+    name: 'Binary Injection Executable Header',
+    input: '\x4D\x5A\x90\x00\x03\x00\x00\x00\x04\x00\x00\x00',
+    description: 'Binary injection attempt with executable file header (PE format)',
+    type: 'Binary Injection',
+    expected: ''
+  },
+  {
+    name: 'Binary Injection ASCII to Binary Conversion',
+    input: Buffer.from('echo vulnerable', 'ascii').toString('binary'),
+    description: 'Binary injection attempt with ASCII to binary conversion',
+    type: 'Binary Injection',
+    expected: 'echo vulnerable'
+  },
+  {
+    name: 'Binary Injection JPEG File Header',
+    input: '\xFF\xD8\xFF\xE0\x00\x10\x4A\x46\x49\x46\x00\x01',
+    description: 'Binary injection attempt with JPEG file header',
+    type: 'Binary Injection',
+    expected: 'JFIF'
+  },
+  {
+    name: 'Binary Injection ELF Executable',
+    input: '\x7F\x45\x4C\x46\x02\x01\x01\x00',
+    description: 'Binary injection attempt with ELF executable header',
+    type: 'Binary Injection',
+    expected: 'ELF'
+  },
+  {
+    name: 'ls in the middle of the string',
+    input: 'testelstest',
+    description: 'Sanitization of word with ls in the middle',
+    type: 'sanitization',
+    expected: 'testelstest'
+  }
 ];
 
 testCases.forEach(testCase => {

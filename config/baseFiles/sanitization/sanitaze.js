@@ -1,11 +1,11 @@
 const dangerousCommandsPattern = /[;&|><`]+/g;
-const controlCharsPattern = /[\x00-\x1F\x7F-\x9F]/g;
-const sqlInjectionPattern = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|TABLE|OR|AND)\b|--)/gi;
-const noSqlInjectionPattern = /(\$where|\$gt|\$lt|\$or)/gi;
-const xssPattern = /<script.*?>.*?<\/script>|<img.*?onerror=.*?>/gi;
+const controlCharsPattern = /[\x00-\x1F\x7F-\x9F]|\x90\x90|\xEB\xFE|\xC3|\x4D\x5A|\xFF\xD8|\x7F\x45\x4C\x46/g;
+const sqlInjectionPattern = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|TABLE|OR|AND)\b|--|\/\*|\*\/|\')/gi
+const noSqlInjectionPattern = /(\$where|\$gt|\$lt|\$or|\\u0024where|\\u0024gt|\\u0024lt|\\u0024or)/gi;
+const xssPattern = /<script.*?>.*?<\/script>|<img.*?(onerror|onload|onclick|onmouseover|onfocus|onblur).*?>|&#x3C;script&#x3E;.*?&#x3C;\/script&#x3E;/gi;
 const headerInjectionPattern = /\r\n|\r|\n/g;
 const extendedAsciiPattern = /[\x80-\xFF]/g;
-const dangerousFunctionsPattern = /\b(eval|exec|system|spawn|whoami|etcpasswd|cat|touch|shutdown|uname)\b/gi;
+const dangerousFunctionsPattern = /\b(eval|exec|system|spawn|whoami|cat|touch|etcpasswd|shutdown|uname|rm|sudo|chmod|chown|killall|kill|ps|netstat|curl|wget|bash|sh|zsh|python|perl|php|ruby|nmap|traceroute|ifconfig|iptables|service|init|reboot|halt|shutdown|taskkill|tasklist|net|ipconfig|nslookup|reg|powershell|bcdedit|diskpart|sc|dir|rd|del|type|findstr|ping|ftp|tftp|wscript|cscript|runas|cacls|attrib|set|cmd|cmdkey|vssadmin|cipher|format|mkfs|fsck|mount|umount|dd|mv|cp|ls|grep|awk|sed|head|tail|cut|tee|alias)\b/gi;
 const xxePattern = /<\?xml[\s\S]*?<!DOCTYPE[\s\S]*?>[\s\S]*?<\/.*?>/g;
 const pathTraversalPattern = /(\.\.|\/\/|\\|\.\/)/g;
 const allowedCharsPattern = /[^a-zA-Z0-9\s@._\-,:<>[\]{}|]/g;
@@ -55,7 +55,8 @@ function sanitizeInput(input) {
       input = input.replace(allowedCharsPattern, '');
       input = input.replace(pathTraversalPattern, '');
       input = input.replace(dangerousFunctionsPattern, '');
-      return input.trim();
+      input = input.trim();
+      return input;
 
     case 'object':
       if (input === null) {
