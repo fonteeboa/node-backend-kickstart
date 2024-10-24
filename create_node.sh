@@ -127,6 +127,7 @@ setup_test_files() {
 
     # Copy the test files to the appropriate locations
     cp "$test_files_source/server.test.js" "$test_destination/server.test.js"
+    cp "$test_files_source/sanitaze.test.js" "$test_destination/sanitaze.test.js"
     cp "$test_files_source/jest.config.js" "$jest_config_destination"
 
     echo "Test files and Jest configuration have been set up successfully."
@@ -222,13 +223,16 @@ create_connection_files() {
     if [ "$5" == "true" ]; then
         dbFile='elasticsearch.js';
     fi
-    cp ../../config/baseFiles/${dbFile} src/config/db.js
+    cp ../../config/baseFiles/databases/${dbFile} src/config/db.js
 }
 
 # Function to create basic files
 create_basic_files() {
     echo "Creating basic files..."
     cp ../../config/baseFiles/server.js src/server.js
+    cp ../../config/baseFiles/sanitization/sanitaze.js src/utils/sanitaze.js
+    cp ../../config/baseFiles/middlewares/sanitizeMiddleware.js src/middlewares/sanitizeMiddleware.js
+    cp ../../config/baseFiles/middlewares/securityMiddleware.js src/middlewares/securityMiddleware.js
     echo "Basic files created."
 }
 

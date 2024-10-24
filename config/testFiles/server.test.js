@@ -32,6 +32,27 @@ describe('Express Application', () => {
         expect(res.text).toContain('<pre>Cannot GET /error</pre>');
     });
 
+    it('should return 200 on GET /', async () => {
+        const res = await request(app).get('/');
+        expect(res.statusCode).toEqual(200);
+        expect(res.text).toEqual('We are ready to go!');
+    });
+
+    it('should handle errors with 500 response', async () => {
+        app.get('/error', (req, res) => {
+            throw new Error('Test error');
+        });
+        const res = await request(app).get('/error');
+        expect(res.statusCode).toEqual(500);
+    });
+
+    it('should return 500 and HTML error page when an error occurs', async () => {
+        const res = await request(app).get('/error');
+
+        expect(res.statusCode).toBe(500);
+        expect(res.text).toContain('<title>Error</title>');
+    });
+
     it('should limit requests with rate limiting', async () => {
         const limit = 100;
         const promises = [];
